@@ -169,11 +169,16 @@ class AutonomousAgent {
       return await executeAgent(this.modelSettings, this.goal, task);
     }
 
-    const res = await axios.post(`/api/execute`, {
-      modelSettings: this.modelSettings,
-      goal: this.goal,
-      task: task,
+    // const res = await axios.post(`/api/execute`, {
+    //   modelSettings: this.modelSettings,
+    //   goal: this.goal,
+    //   task: task,
+    // });
+    const res = await axios.post(`http://localhost:4200/execute`, {
+      command: task
     });
+    console.log(res, "response from command");
+    return "";
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
     return res.data.response as string;
   }

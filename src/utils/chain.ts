@@ -19,7 +19,7 @@ export const createModel = (settings: ModelSettings) =>
 
 const startGoalPrompt = new PromptTemplate({
   template:
-    "You are an autonomous software engineering AI with the following objecting `{goal}`. Provide a list of commands to be inputted into a windows terminal to such that your goal is more closely reached or completely reached.\n{format_instructions}",
+    "You are an autonomous software engineering AI with the following objective `{goal}`. Provide a list of batch commands to be inputted into a windows terminal such that your goal is more closely reached or completely reached.\n{format_instructions}",
     // "You are an autonomous task creation AI called AgentGPT. You have the following objective `{goal}`. Create a list of zero to three tasks to be completed by your AI system such that your goal is more closely reached or completely reached.\n{format_instructions}",
   inputVariables: ["goal"],
   partialVariables: {
