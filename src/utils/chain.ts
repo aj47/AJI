@@ -19,11 +19,11 @@ export const createModel = (settings: ModelSettings) =>
 
 const startGoalPrompt = new PromptTemplate({
   template:
-    "You are an autonomous software engineering AI with the following objective `{goal}`. Provide a list of batch commands to be inputted into a windows terminal such that your goal is more closely reached or completely reached.\n{format_instructions}",
+    "You are an autonomous software engineering AI with the following objective `{goal}`.  Provide only one batch command to be inputted into a windows terminal.\n{format_instructions}",
     // "You are an autonomous task creation AI called AgentGPT. You have the following objective `{goal}`. Create a list of zero to three tasks to be completed by your AI system such that your goal is more closely reached or completely reached.\n{format_instructions}",
   inputVariables: ["goal"],
   partialVariables: {
-    format_instructions: tasksParser.getFormatInstructions(),
+    format_instructions: '',
   },
 });
 export const startGoalAgent = async (model: OpenAI, goal: string) => {
