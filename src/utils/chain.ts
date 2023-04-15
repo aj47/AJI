@@ -80,6 +80,7 @@ export const executeCreateTaskAgent = async (
 };
 
 export const extractArray = (inputStr: string): string[] => {
+  return [inputStr];
   // Match an outer array of strings (including nested arrays)
   const regex = /(\[(?:\s*"(?:[^"\\]|\\.)*"\s*,?)+\s*\])/;
   const match = inputStr.match(regex);
