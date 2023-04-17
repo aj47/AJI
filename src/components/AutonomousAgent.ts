@@ -74,12 +74,12 @@ class AutonomousAgent {
     }
 
     this.numLoops += 1;
-    const maxLoops = this.modelSettings.customApiKey === "" ? 4 : 25;
-    if (this.numLoops > maxLoops) {
-      this.sendLoopMessage();
-      this.shutdown();
-      return;
-    }
+    // const maxLoops = this.modelSettings.customApiKey === "" ? 4 : 25;
+    // if (this.numLoops > maxLoops) {
+    //   this.sendLoopMessage();
+    //   this.shutdown();
+    //   return;
+    // }
 
     // Wait before starting
     await new Promise((r) => setTimeout(r, 1000));
@@ -177,8 +177,8 @@ class AutonomousAgent {
     const res = await axios.post(`http://localhost:4200/execute`, {
       command: task
     });
-    console.log(res, "response from command");
-    return "";
+    // console.log(res, "response from command");
+    return res.data as string;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
     return res.data.response as string;
   }

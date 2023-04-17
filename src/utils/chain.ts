@@ -1,9 +1,12 @@
 import { OpenAI } from "langchain/llms/openai";
 import { PromptTemplate } from "langchain/prompts";
-import { LLMChain } from "langchain/chains";
+import { LLMChain, ConversationChain } from "langchain/chains";
 import type { ModelSettings } from "./types";
 import { GPT_35_TURBO } from "./constants";
 import { tasksParser } from "./parsers";
+// https://js.langchain.com/docs/modules/prompts/prompt_templates/
+
+let chain = null;
 
 export const createModel = (settings: ModelSettings) =>
   new OpenAI({
@@ -35,34 +38,28 @@ export const startGoalAgent = async (model: OpenAI, goal: string) => {
   });
 };
 
-const executeTaskPrompt = new PromptTemplate({
-  template:
-    "You are an autonomous task execution AI called AgentGPT. You have the following objective `{goal}`. You have the following tasks `{task}`. Execute the task and return the response as a string.",
-  inputVariables: ["goal", "task"],
-});
-export const executeTaskAgent = async (
-  model: OpenAI,
-  goal: string,
-  task: string
-) => {
-  return await new LLMChain({ llm: model, prompt: executeTaskPrompt }).call({
-    goal,
-    task,
-  });
-  // EXECUTE THE COMMAND
-  // return await new LLMChain({ llm: model, prompt: executeTaskPrompt }).call({
-  //   goal,
-  //   task,
-  // });
-};
+// const executeTaskPrompt = new PromptTemplate({
+//   template:
+//     "You are an autonomous task execution AI called AgentGPT. You have the following objective `{goal}`. You have the following tasks `{task}`. Execute the task and return the response as a string.",
+//   inputVariables: ["goal", "task"],
+// });
+// export const executeTaskAgent = async (
+//   model: OpenAI,
+//   goal: string,
+//   task: string
+// ) => {
+//   return await new LLMChain({ llm: model, prompt: executeTaskPrompt }).call({
+//     goal,
+//     task,
+//   });
+// };
 
 const createTaskPrompt = new PromptTemplate({
-  template:
-    "You are an AI task creation agent. You have the following objective `{goal}`. You have the following incomplete tasks `{tasks}` and have just executed the following task `{lastTask}` and received the following result `{result}`. Based on this, create a new task to be completed by your AI system ONLY IF NEEDED such that your goal is more closely reached or completely reached.\n{format_instructions}",
+  template: "You are an autonomous software engineering AI with the following objective `{goal}`. \n You have just run `{lastTask}` which resulted in: ``` `{result}` ```. \n provide only one batch command to get closer to your goal and wait for response from the terminal \n do not speak in english, only speak in batch. \n do not run the same command you just ran",
   inputVariables: ["goal", "tasks", "lastTask", "result"],
-  partialVariables: {
-    format_instructions: tasksParser.getFormatInstructions(),
-  },
+  // partialVariables: {
+  //   format_instructions: 'The output should be a single command snippet runnable in a windows terminal',
+  // },
 });
 export const executeCreateTaskAgent = async (
   model: OpenAI,
