@@ -16,6 +16,7 @@ app.post("/execute", (req, res) => {
   exec(req.body.command, (error, stdout, stderr) => {
     if (error) {
       console.error(`exec error: ${error}`);
+      res.send(`stderr: ${error}`);
       return;
     }
     console.log(`stdout: ${stdout}`);
