@@ -1,21 +1,24 @@
 import React from "react";
-import { FaListAlt } from "react-icons/fa";
 import FadeIn from "./motions/FadeIn";
 import Expand from "./motions/expand";
+import { Task } from "../types/agentTypes";
+import { getMessageContainerStyle, getTaskStatusIcon } from "./utils/helpers";
+import { useMessageStore } from "../components/store";
+import { FaListAlt } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
-type TaskWindowProps = {
-  tasks: string[];
-};
-export const TaskWindow = ({ tasks }: TaskWindowProps) => {
+export const TaskWindow = ({ isAgentStopped }: { isAgentStopped: boolean }) => {
+  const tasks = useMessageStore.use.tasks();
+  const [t] = useTranslation();
   return (
-    <Expand className="xl m-3 hidden h-[65%] w-[20rem] flex-col items-center overflow-auto rounded-2xl border-2 border-white/30 bg-zinc-900 font-mono shadow-2xl xl:flex">
-      <div className="w-full px-2">
-        <div className="sticky top-0 my-2 flex items-center justify-center gap-2 bg-zinc-900 p-2 text-white">
-          <FaListAlt /> Current tasks
-        </div>
-        <div className="flex flex-col gap-2">
-          {tasks.map((task, index) => (
-            <Task key={`${task}-${index}`} task={task} />
+    <Expand className="xl mx-2 mt-4 hidden w-[20rem] flex-col items-center rounded-2xl border-2 border-white/20 bg-zinc-900 px-1 font-mono shadow-2xl xl:flex">
+      <div className="sticky top-0 my-2 flex items-center justify-center gap-2 bg-zinc-900 p-2 text-gray-300 ">
+        <FaListAlt /> {t("Current tasks")}
+      </div>
+      <div className="window-heights mb-2 w-full px-1 ">
+        <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden">
+          {tasks.map((task, i) => (
+            <Task key={i} task={task} isAgentStopped={isAgentStopped} />
           ))}
         </div>
       </div>
@@ -23,11 +26,22 @@ export const TaskWindow = ({ tasks }: TaskWindowProps) => {
   );
 };
 
-const Task = ({ task }: { task: string }) => {
+const Task = ({
+  task,
+  isAgentStopped,
+}: {
+  task: Task;
+  isAgentStopped: boolean;
+}) => {
   return (
-    <FadeIn delay={1}>
-      <div className="w-full rounded-md border-2 border-white/20 p-2 text-sm text-white hover:border-white/40">
-        {task}
+    <FadeIn>
+      <div
+        className={`w-full animate-[rotate] rounded-md border-2 p-2 text-sm text-white ${
+          isAgentStopped ? "opacity-50" : ""
+        } ${getMessageContainerStyle(task)}`}
+      >
+        {getTaskStatusIcon(task, { isAgentStopped })}
+        <span>{task.value}</span>
       </div>
     </FadeIn>
   );
