@@ -229,7 +229,7 @@ class AutonomousAgent {
     //   goal: this.goal,
     //   task: task,
     // });
-    const res = await axios.post(`http://localhost:4200/execute`, {
+    const res = await axios.post(`http://164.92.169.143:4200/execute`, {
       command: task
     });
     // console.log(res, "response from command");

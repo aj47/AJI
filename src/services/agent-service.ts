@@ -17,7 +17,9 @@ async function startGoalAgent(modelSettings: ModelSettings, goal: string) {
     goal,
   });
   console.log("Completion:" + (completion.text as string));
-  return extractTasks(completion.text as string, []);
+  const completionText = completion.text as string;
+  return [completionText.replaceAll('`', '')] as string[];
+  // return extractTasks(completion.text as string, []);
 }
 
 async function executeTaskAgent(
@@ -54,7 +56,9 @@ async function createTasksAgent(
     result,
   });
 
-  return extractTasks(completion.text as string, completedTasks || []);
+  const completionText = completion.text as string;
+  return [completionText.replaceAll('`', '')] as string[];
+  // return extractTasks(completion.text as string, completedTasks || []);
 }
 
 interface AgentService {

@@ -28,7 +28,8 @@ export const createModel = (settings: ModelSettings) => {
 
 export const startGoalPrompt = new PromptTemplate({
   template:
-    "You are an autonomous task creation AI called AgentGPT. You have the following objective `{goal}`. Create a list of zero to three tasks to be completed by your AI system such that your goal is more closely reached or completely reached. Return the response as an array of strings that can be used in JSON.parse()",
+    "You are an expert software engineer with the following objective `{goal}`. You are interfacing with a linux (ubuntu) terminal. Provide ONLY ONE bash command to run in the terminal.",
+    // "You are an autonomous task creation AI called AgentGPT. You have the following objective `{goal}`. Create a list of zero to three tasks to be completed by your AI system such that your goal is more closely reached or completely reached. Return the response as an array of strings that can be used in JSON.parse()",
   inputVariables: ["goal"],
 });
 
@@ -40,6 +41,7 @@ export const executeTaskPrompt = new PromptTemplate({
 
 export const createTasksPrompt = new PromptTemplate({
   template:
-    "You are an AI task creation agent. You have the following objective `{goal}`. You have the following incomplete tasks `{tasks}` and have just executed the following task `{lastTask}` and received the following result `{result}`. Based on this, create a new task to be completed by your AI system ONLY IF NEEDED such that your goal is more closely reached or completely reached. Return the response as an array of strings that can be used in JSON.parse() and NOTHING ELSE",
+    "You are an expert software engineer with the following objective `{goal}`. You are interfacing with a linux (ubuntu) terminal. \n You have just run `{lastTask}` which resulted in: ``` `{result}` ```. \n provide ONLY ONE bash command to get closer to your goal and wait for response from the terminal \n do not speak in english, only speak in bash. \n do not run the same command you just ran",
+    // "You are an AI task creation agent. You have the following objective `{goal}`. You have the following incomplete tasks `{tasks}` and have just executed the following task `{lastTask}` and received the following result `{result}`. Based on this, create a new task to be completed by your AI system ONLY IF NEEDED such that your goal is more closely reached or completely reached. Return the response as an array of strings that can be used in JSON.parse() and NOTHING ELSE",
   inputVariables: ["goal", "tasks", "lastTask", "result"],
 });

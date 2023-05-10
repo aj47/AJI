@@ -22,7 +22,8 @@ export const createModel = (settings: ModelSettings) =>
 
 const startGoalPrompt = new PromptTemplate({
   template:
-    "You are an autonomous software engineering AI with the following objective `{goal}`.  Provide only one batch command to be inputted into a windows terminal.\n{format_instructions}",
+    "You are an expert software engineer with the following objective `{goal}`. You are interfacing with a linux (ubuntu) terminal. Provide ONLY ONE bash command to run in the terminal.\n{format_instructions}",
+    // "You are an autonomous software engineering AI with the following objective `{goal}`.  Provide only one batch command to be inputted into a windows terminal.\n{format_instructions}",
     // "You are an autonomous task creation AI called AgentGPT. You have the following objective `{goal}`. Create a list of zero to three tasks to be completed by your AI system such that your goal is more closely reached or completely reached.\n{format_instructions}",
   inputVariables: ["goal"],
   partialVariables: {
@@ -55,7 +56,8 @@ export const startGoalAgent = async (model: OpenAI, goal: string) => {
 // };
 
 const createTaskPrompt = new PromptTemplate({
-  template: "You are an autonomous software engineering AI with the following objective `{goal}`. \n You have just run `{lastTask}` which resulted in: ``` `{result}` ```. \n provide only one batch command to get closer to your goal and wait for response from the terminal \n do not speak in english, only speak in batch. \n do not run the same command you just ran",
+  template: "You are an expert software engineer with the following objective `{goal}`. You are interfacing with a linux (ubuntu) terminal. \n You have just run `{lastTask}` which resulted in: ``` `{result}` ```. \n provide ONLY ONE bash command to get closer to your goal and wait for response from the terminal \n do not speak in english, only speak in bash. \n do not run the same command you just ran",
+  // template: "You are an autonomous software engineering AI with the following objective `{goal}`. \n You have just run `{lastTask}` which resulted in: ``` `{result}` ```. \n provide only one batch command to get closer to your goal and wait for response from the terminal \n do not speak in english, only speak in batch. \n do not run the same command you just ran",
   inputVariables: ["goal", "tasks", "lastTask", "result"],
   // partialVariables: {
   //   format_instructions: 'The output should be a single command snippet runnable in a windows terminal',
